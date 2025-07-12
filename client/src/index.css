@@ -118,3 +118,83 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom Animations */
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+/* Editor placeholder styling */
+[contenteditable]:empty:before {
+  content: attr(data-placeholder);
+  color: #9CA3AF;
+  pointer-events: none;
+  display: block;
+}
+
+[contenteditable]:focus:before {
+  display: none;
+}
+
+/* White text placeholder for dark backgrounds */
+.text-white[contenteditable]:empty:before {
+  color: #D1D5DB;
+}
+
+/* Fix text direction in contenteditable elements */
+[contenteditable] {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: normal !important;
+  writing-mode: lr-tb !important;
+}
+
+[contenteditable] * {
+  direction: ltr !important;
+  unicode-bidi: normal !important;
+}
+
+/* Ensure proper cursor and text flow */
+[contenteditable]:focus {
+  text-align: left !important;
+  direction: ltr !important;
+}
+
+/* Question card styling */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Question content styling */
+.prose code {
+  background-color: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
