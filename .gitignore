@@ -135,3 +135,5 @@ coverage/
 # Misc
 *.orig
 .merge_file*
+
+/generated/prisma
