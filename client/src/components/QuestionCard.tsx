@@ -1,7 +1,7 @@
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
-interface Question {
+export interface Question {
   id: string;
   title: string;
   description: string;
@@ -28,14 +28,16 @@ const QuestionCard = ({ question, index }: QuestionCardProps) => {
   const formatTimeAgo = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
-    if (diffInHours < 1) return 'asked just now';
+    const diffInHours = Math.floor(
+      (now.getTime() - date.getTime()) / (1000 * 60 * 60)
+    );
+
+    if (diffInHours < 1) return "asked just now";
     if (diffInHours < 24) return `asked ${diffInHours} hours ago`;
-    
+
     const diffInDays = Math.floor(diffInHours / 24);
     if (diffInDays < 30) return `asked ${diffInDays} days ago`;
-    
+
     const diffInMonths = Math.floor(diffInDays / 30);
     return `asked ${diffInMonths} months ago`;
   };
@@ -59,18 +61,33 @@ const QuestionCard = ({ question, index }: QuestionCardProps) => {
             </span>
             <span className="text-xs">votes</span>
           </div>
-          
+
           <div className="flex flex-col items-center p-2 mt-2 bg-blue-50 rounded-lg">
-            <span className="font-semibold text-lg text-blue-600">
+            {/* <span className="font-semibold text-lg text-blue-600">
               {question.answers || Math.floor(Math.random() * 10)}
-            </span>
+            </span> */}
             <span className="text-xs text-blue-600">ans</span>
           </div>
-          
+
           <div className="flex items-center mt-2 text-xs text-gray-400">
-            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            <svg
+              className="w-4 h-4 mr-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+              />
             </svg>
             {question.views || Math.floor(Math.random() * 500)}
           </div>
@@ -81,7 +98,7 @@ const QuestionCard = ({ question, index }: QuestionCardProps) => {
           <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-200">
             {question.title}
           </h3>
-          
+
           <p className="text-gray-600 mb-4 line-clamp-2">
             {question.description}
           </p>
@@ -106,10 +123,20 @@ const QuestionCard = ({ question, index }: QuestionCardProps) => {
               </div>
               <span>User {question.userId.slice(0, 8)}</span>
             </div>
-            
+
             <span className="flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               {formatTimeAgo(question.createdAt)}
             </span>

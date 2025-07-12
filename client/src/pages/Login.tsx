@@ -9,6 +9,7 @@ import { useAuth } from "../context/authContext";
 const Backend_URL = "http://localhost:8080";
 
 interface LoginResponse {
+  error?: boolean;
   token?: string;
   user?: {
     id: string;
@@ -165,7 +166,7 @@ const Login: React.FC = () => {
 
       const data: LoginResponse = await response.json();
 
-      if (!response.ok) {
+      if (!response.ok || data.error) {
         throw new Error(
           data.message || `${isLogin ? "Login" : "Sign up"} failed`
         );
@@ -189,7 +190,7 @@ const Login: React.FC = () => {
         throw new Error("Invalid response from server");
       }
     } catch (error) {
-      console.error(`${isLogin ? "Login" : "Sign up"} error:`, error);
+      // console.error(`${isLogin ? "Login" : "Sign up"} error:`, error);
 
       let errorMessage = `${
         isLogin ? "Login" : "Sign up"

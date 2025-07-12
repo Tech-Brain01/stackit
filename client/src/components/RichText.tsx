@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
-import { useState, useRef, useEffect } from 'react';
+import { motion } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
 
 interface EditorProps {
   value: string;
@@ -7,7 +7,11 @@ interface EditorProps {
   placeholder?: string;
 }
 
-const Editor = ({ value, onChange, placeholder = "Enter your description..." }: EditorProps) => {
+const Editor = ({
+  value,
+  onChange,
+  placeholder = "Enter your description...",
+}: EditorProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const editorRef = useRef<HTMLDivElement>(null);
 
@@ -19,14 +23,14 @@ const Editor = ({ value, onChange, placeholder = "Enter your description..." }: 
   }, [value]);
 
   const toolbarButtons = [
-    { icon: 'B', action: 'bold', title: 'Bold' },
-    { icon: 'I', action: 'italic', title: 'Italic' },
-    { icon: 'U', action: 'underline', title: 'Underline' },
-    { icon: '•', action: 'unorderedlist', title: 'Bullet List' },
-    { icon: '1.', action: 'orderedlist', title: 'Numbered List' },
-    { icon: '¶', action: 'insertparagraph', title: 'Paragraph' },
-    { icon: '🔗', action: 'link', title: 'Insert Link' },
-    { icon: '📷', action: 'image', title: 'Insert Image' },
+    { icon: "B", action: "bold", title: "Bold" },
+    { icon: "I", action: "italic", title: "Italic" },
+    { icon: "U", action: "underline", title: "Underline" },
+    { icon: "•", action: "unorderedlist", title: "Bullet List" },
+    { icon: "1.", action: "orderedlist", title: "Numbered List" },
+    { icon: "¶", action: "insertparagraph", title: "Paragraph" },
+    { icon: "🔗", action: "link", title: "Insert Link" },
+    { icon: "📷", action: "image", title: "Insert Image" },
   ];
 
   const handleToolbarAction = (action: string) => {
@@ -34,14 +38,14 @@ const Editor = ({ value, onChange, placeholder = "Enter your description..." }: 
   };
 
   const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
-    const content = e.currentTarget.textContent || '';
+    const content = e.currentTarget.textContent || "";
     onChange(content);
   };
 
   return (
     <motion.div
       className={`border rounded-lg overflow-hidden transition-all duration-300 ${
-        isFocused ? 'border-blue-500 shadow-lg' : 'border-gray-300'
+        isFocused ? "border-blue-500 shadow-lg" : "border-gray-300"
       }`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -61,11 +65,11 @@ const Editor = ({ value, onChange, placeholder = "Enter your description..." }: 
             {button.icon}
           </motion.button>
         ))}
-        
+
         {/* Alignment buttons */}
         <div className="ml-4 flex gap-1">
           <motion.button
-            onClick={() => handleToolbarAction('justifyleft')}
+            onClick={() => handleToolbarAction("justifyleft")}
             className="p-2 hover:bg-gray-200 rounded text-sm text-gray-600 hover:text-gray-800 transition-colors duration-200"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -74,7 +78,7 @@ const Editor = ({ value, onChange, placeholder = "Enter your description..." }: 
             ≡
           </motion.button>
           <motion.button
-            onClick={() => handleToolbarAction('justifycenter')}
+            onClick={() => handleToolbarAction("justifycenter")}
             className="p-2 hover:bg-gray-200 rounded text-sm text-gray-600 hover:text-gray-800 transition-colors duration-200"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -83,7 +87,7 @@ const Editor = ({ value, onChange, placeholder = "Enter your description..." }: 
             ≣
           </motion.button>
           <motion.button
-            onClick={() => handleToolbarAction('justifyright')}
+            onClick={() => handleToolbarAction("justifyright")}
             className="p-2 hover:bg-gray-200 rounded text-sm text-gray-600 hover:text-gray-800 transition-colors duration-200"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -98,7 +102,7 @@ const Editor = ({ value, onChange, placeholder = "Enter your description..." }: 
       <div
         ref={editorRef}
         contentEditable
-        className="min-h-[200px] p-4 outline-none text-white leading-relaxed bg-transparent text-left"
+        className="min-h-[200px] p-4 outline-none text-black leading-relaxed bg-transparent text-left"
         dir="ltr"
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
