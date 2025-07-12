@@ -30,8 +30,10 @@ export class UserService {
       user: {
         id: user.id,
         email: user.email,
+        username: user.username,
       },
       token,
+      message: "Welcome to StackIt",
     };
   }
 
@@ -50,6 +52,9 @@ export class UserService {
       { expiresIn: "1hr" }
     );
 
-    return { user: { id: exist.id, email: exist.email }, token };
+    return {
+      user: { id: exist.id, email: exist.email, username: exist.username },
+      token,
+    };
   }
 }

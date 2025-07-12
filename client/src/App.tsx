@@ -10,22 +10,42 @@ import NotFound from "./pages/PageNotFound";
 
 // Common Layout (optional)
 import Navbar from "./components/NavBar";
+import { AuthProvider } from "./context/authContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-900">
-      <Navbar />
+    <AuthProvider>
+      <div className="min-h-screen bg-gray-100 text-gray-900">
+        <Navbar />
 
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/ask" element={<AskQuestion />} />
-          <Route path="/question/:id" element={<QuestionDetail />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </main>
-    </div>
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+
+            <Route
+              path="/ask"
+              element={
+                <ProtectedRoute>
+                  <AskQuestion />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/question/:id"
+              element={
+                <ProtectedRoute>
+                  <QuestionDetail />{" "}
+                </ProtectedRoute>
+              }
+            />
+
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
+      </div>
+    </AuthProvider>
   );
 };
 

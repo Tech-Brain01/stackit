@@ -1,18 +1,25 @@
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
-import Avatar from './Avatar';
-import NotificationBell from './NotificationBell';
+import Avatar from "./Avatar";
+import NotificationBell from "./NotificationBell";
+import { useAuth } from "@/context/authContext";
 
 const NavBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isAskQuestionPage = location.pathname === '/ask';
+  const isAskQuestionPage = location.pathname === "/ask";
+  const { isAuthenticated } = useAuth();
 
   const handleHomeClick = () => {
     navigate("/");
   };
 
   const handleLoginClick = () => {
+    navigate("/login");
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
     navigate("/login");
   };
 
@@ -64,12 +71,28 @@ const NavBar = () => {
             >
               Home
             </motion.button>
-            
+
+            {isAuthenticated && (
+              <motion.button
+                className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 10px 30px rgba(59, 130, 246, 0.3)",
+                }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                // onClick={handleLoginClick}
+              >
+                Logout
+              </motion.button>
+            )}
+
             <NotificationBell />
             <Avatar />
           </div>
-        ) : (
-          // Default Navigation (Login Button)
+        ) : !isAuthenticated ? (
           <motion.button
             className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
             whileHover={{
@@ -83,6 +106,21 @@ const NavBar = () => {
             onClick={handleLoginClick}
           >
             Login
+          </motion.button>
+        ) : (
+          <motion.button
+            className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0 10px 30px rgba(59, 130, 246, 0.3)",
+            }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            onClick={handleLogout}
+          >
+            LogOut
           </motion.button>
         )}
       </div>

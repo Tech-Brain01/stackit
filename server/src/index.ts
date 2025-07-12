@@ -9,7 +9,11 @@ import { notificationRouter } from "./routes/notifications.route";
 
 const PORT = process.env.PORT || 8080;
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 app.use(cookieparser());
 app.use(express.json());
 app.use(errorHandler);
