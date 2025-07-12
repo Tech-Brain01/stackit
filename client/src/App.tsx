@@ -5,7 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import AskQuestion from "./pages/AskQuestion";
-import AllQuestions from "./pages/ShowAllQuestions";
+import QuestionDetail from "./pages/QuestionDetail";
 import NotFound from "./pages/PageNotFound";
 
 // Common Layout (optional)
@@ -16,12 +16,12 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-gray-100 text-gray-900">
       <Navbar />
 
-      <main className="px-4 py-6">
+      <main>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/ask" element={<AskQuestion />} />
-          <Route path="/questions" element={<AllQuestions />} />
+          <Route path="/question/:id" element={<QuestionDetail />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

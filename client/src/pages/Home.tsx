@@ -1,9 +1,49 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Filter from '../components/Filter';
+import QuestionCard from '../components/QuestionCard';
+import Pagination from '../components/Pagination';
+
+interface Question {
+  id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  userId: string;
+  createdAt: string;
+}
 
 const Home = () => {
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [loading, setLoading] = useState(true);
+  const questionsPerPage = 6;
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const response = await fetch('/dummy_questions.json');
+        const data = await response.json();
+        // Filter out incomplete questions (some entries in the JSON might be missing required fields)
+        const validQuestions = data.filter((q: any) => 
+          q.id && q.title && q.description && q.tags && q.userId && q.createdAt
+        );
+        setQuestions(validQuestions);
+      } catch (error) {
+        console.error('Error fetching questions:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuestions();
+  }, []);
+
+  const totalPages = Math.ceil(questions.length / questionsPerPage);
+  const startIndex = (currentPage - 1) * questionsPerPage;
+  const currentQuestions = questions.slice(startIndex, startIndex + questionsPerPage);
 
   const handleAskQuestion = () => {
     navigate('/ask');
@@ -11,6 +51,11 @@ const Home = () => {
 
   const handleBrowseQuestions = () => {
     navigate('/questions');
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -33,24 +78,7 @@ const Home = () => {
               Where developers come together to ask questions, share knowledge, and build amazing things.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.button
-                className="px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(59, 130, 246, 0.3)" }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleAskQuestion}
-              >
-                Ask a Question
-              </motion.button>
-              <motion.button
-                className="px-8 py-4 bg-white text-gray-700 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleBrowseQuestions}
-              >
-                Browse Questions
-              </motion.button>
-            </div>
+
           </motion.div>
         </div>
 
@@ -62,6 +90,71 @@ const Home = () => {
         </div>
       </div>
 
+      {/* Questions Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">All Questions</h2>
+              <p className="text-gray-600">Discover knowledge, share solutions, and connect with the community</p>
+            </div>
+            <div className="text-sm text-gray-500">
+              {loading ? 'Loading...' : `${questions.length} questions`}
+            </div>
+          </div>
+
+          {/* Loading State */}
+          {loading ? (
+            <div className="grid gap-6">
+              {[...Array(6)].map((_, index) => (
+                <div key={index} className="bg-white rounded-xl border border-gray-200 p-6 animate-pulse">
+                  <div className="flex gap-4">
+                    <div className="flex flex-col items-center min-w-[60px]">
+                      <div className="w-12 h-8 bg-gray-200 rounded mb-2"></div>
+                      <div className="w-12 h-8 bg-gray-200 rounded"></div>
+                    </div>
+                    <div className="flex-1">
+                      <div className="h-6 bg-gray-200 rounded mb-3 w-3/4"></div>
+                      <div className="h-4 bg-gray-200 rounded mb-2 w-full"></div>
+                      <div className="h-4 bg-gray-200 rounded mb-4 w-2/3"></div>
+                      <div className="flex gap-2 mb-4">
+                        <div className="h-6 bg-gray-200 rounded-full w-16"></div>
+                        <div className="h-6 bg-gray-200 rounded-full w-20"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <>
+              {/* Question Cards Grid */}
+              <div className="grid gap-6">
+                {currentQuestions.map((question, index) => (
+                  <QuestionCard
+                    key={question.id}
+                    question={question}
+                    index={index}
+                  />
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                />
+              )}
+            </>
+          )}
+        </motion.div>
+      </div>
 
     </div>
   );
