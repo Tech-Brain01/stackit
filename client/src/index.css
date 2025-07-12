@@ -146,3 +146,19 @@
 .animation-delay-4000 {
   animation-delay: 4s;
 }
+/* Editor placeholder styling */
+[contenteditable]:empty:before {
+  content: attr(data-placeholder);
+  color: #9CA3AF;
+  pointer-events: none;
+  display: block;
+}
+
+[contenteditable]:focus:before {
+  display: none;
+}
+
+/* White text placeholder for dark backgrounds */
+.text-white[contenteditable]:empty:before {
+  color: #D1D5DB;
+}
