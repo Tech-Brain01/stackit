@@ -1,8 +1,12 @@
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import Avatar from './Avatar';
+import NotificationBell from './NotificationBell';
 
 const NavBar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isAskQuestionPage = location.pathname === '/ask';
 
   const handleHomeClick = () => {
     navigate("/");
@@ -19,9 +23,11 @@ const NavBar = () => {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
+      {/* Glow effect */}
       <div className="absolute inset-0 bg-gradient-glow opacity-50" />
 
       <div className="max-w-7xl mx-auto flex items-center justify-between relative z-10">
+        {/* Logo */}
         <motion.div
           className="flex items-center cursor-pointer"
           whileHover={{ scale: 1.05 }}
@@ -38,20 +44,47 @@ const NavBar = () => {
           />
         </motion.div>
 
-        <motion.button
-          className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
-          whileHover={{
-            scale: 1.05,
-            boxShadow: "0 10px 30px rgba(59, 130, 246, 0.3)",
-          }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ type: "spring", stiffness: 400, damping: 10 }}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          onClick={handleLoginClick}
-        >
-          Login
-        </motion.button>
+        {/* Center - User Info (only on ask question page) */}
+        {isAskQuestionPage && (
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+            <span className="text-green-400 font-medium">Amrendera Tomar</span>
+          </div>
+        )}
+
+        {/* Right Side - Conditional Content */}
+        {isAskQuestionPage ? (
+          // Ask Question Page Navigation
+          <div className="flex items-center gap-4">
+            <motion.button
+              className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors duration-300 font-medium"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleHomeClick}
+            >
+              Home
+            </motion.button>
+            
+            <NotificationBell />
+            <Avatar />
+          </div>
+        ) : (
+          // Default Navigation (Login Button)
+          <motion.button
+            className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0 10px 30px rgba(59, 130, 246, 0.3)",
+            }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            onClick={handleLoginClick}
+          >
+            Login
+          </motion.button>
+        )}
       </div>
     </motion.header>
   );
