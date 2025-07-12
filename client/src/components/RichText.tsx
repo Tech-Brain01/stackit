@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 interface EditorProps {
   value: string;
@@ -9,6 +9,14 @@ interface EditorProps {
 
 const Editor = ({ value, onChange, placeholder = "Enter your description..." }: EditorProps) => {
   const [isFocused, setIsFocused] = useState(false);
+  const editorRef = useRef<HTMLDivElement>(null);
+
+  // Update content when value prop changes
+  useEffect(() => {
+    if (editorRef.current && editorRef.current.textContent !== value) {
+      editorRef.current.textContent = value;
+    }
+  }, [value]);
 
   const toolbarButtons = [
     { icon: 'B', action: 'bold', title: 'Bold' },
@@ -23,6 +31,11 @@ const Editor = ({ value, onChange, placeholder = "Enter your description..." }: 
 
   const handleToolbarAction = (action: string) => {
     document.execCommand(action, false, undefined);
+  };
+
+  const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
+    const content = e.currentTarget.textContent || '';
+    onChange(content);
   };
 
   return (
@@ -83,13 +96,15 @@ const Editor = ({ value, onChange, placeholder = "Enter your description..." }: 
 
       {/* Editor Content */}
       <div
+        ref={editorRef}
         contentEditable
-        className="min-h-[200px] p-4 outline-none text-white leading-relaxed bg-transparent"
+        className="min-h-[200px] p-4 outline-none text-white leading-relaxed bg-transparent text-left"
+        dir="ltr"
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        onInput={(e) => onChange(e.currentTarget.innerHTML)}
-        dangerouslySetInnerHTML={{ __html: value }}
+        onInput={handleInput}
         data-placeholder={placeholder}
+        suppressContentEditableWarning={true}
       />
     </motion.div>
   );

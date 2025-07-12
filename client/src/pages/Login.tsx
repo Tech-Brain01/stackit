@@ -6,17 +6,42 @@ import loginAnim from "../assets/Login.json";
 import { motion } from "framer-motion";
 
 const Login: React.FC = () => {
-  const [role, setRole] = useState<"user" | "admin">("user");
+  const [isLogin, setIsLogin] = useState(false); // false = Sign Up, true = Login
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
   const navigate = useNavigate();
   const location = useLocation();
 
   const from = (location.state as any)?.from?.pathname || "/";
 
-  const handleLogin = () => {
-    // mock login
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleSubmit = () => {
+    // mock authentication
+    console.log(isLogin ? 'Login attempted' : 'Sign up attempted', formData);
     setTimeout(() => {
       navigate(from); 
     }, 500);
+  };
+
+  const toggleMode = () => {
+    setIsLogin(!isLogin);
+    // Reset form when switching modes
+    setFormData({
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    });
   };
 
   return (
@@ -44,57 +69,44 @@ const Login: React.FC = () => {
               transition={{ delay: 0.2, duration: 0.5 }}
             >
               <h2 className="text-4xl font-bold mb-3 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                Welcome Back
+                {isLogin ? "Welcome Back" : "Create Account"}
               </h2>
               <p className="text-gray-300 mb-8 text-lg">
-                Login as <span className="text-blue-400 font-semibold">{role}</span>
+                {isLogin ? "Login to your account" : "Sign up to get started"}
               </p>
-            </motion.div>
-
-            {/* Role Selection */}
-            <motion.div 
-              className="flex mb-6 gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-            >
-              <button
-                onClick={() => setRole("user")}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                  role === "user"
-                    ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/25"
-                    : "bg-transparent border border-gray-400 text-gray-300 hover:border-blue-400 hover:text-blue-400"
-                }`}
-              >
-                User
-              </button>
-              <button
-                onClick={() => setRole("admin")}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                  role === "admin"
-                    ? "bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg shadow-purple-500/25"
-                    : "bg-transparent border border-gray-400 text-gray-300 hover:border-purple-400 hover:text-purple-400"
-                }`}
-              >
-                Admin
-              </button>
             </motion.div>
 
             {/* Login Form */}
             <motion.form
               onSubmit={(e) => {
                 e.preventDefault();
-                handleLogin();
+                handleSubmit();
               }}
               className="flex flex-col gap-6"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.5 }}
             >
+              {/* Username field - only for Sign Up */}
+              {!isLogin && (
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Username"
+                    value={formData.username}
+                    onChange={(e) => handleInputChange('username', e.target.value)}
+                    className="w-full bg-white/10 text-white px-6 py-4 rounded-xl placeholder-gray-400 outline-none border border-white/20 focus:border-blue-400 focus:bg-white/15 transition-all duration-300 backdrop-blur-sm"
+                    required
+                  />
+                </div>
+              )}
+              
               <div className="relative">
                 <input
                   type="email"
                   placeholder="Email Address"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
                   className="w-full bg-white/10 text-white px-6 py-4 rounded-xl placeholder-gray-400 outline-none border border-white/20 focus:border-blue-400 focus:bg-white/15 transition-all duration-300 backdrop-blur-sm"
                   required
                 />
@@ -104,10 +116,26 @@ const Login: React.FC = () => {
                 <input
                   type="password"
                   placeholder="Password"
+                  value={formData.password}
+                  onChange={(e) => handleInputChange('password', e.target.value)}
                   className="w-full bg-white/10 text-white px-6 py-4 rounded-xl placeholder-gray-400 outline-none border border-white/20 focus:border-blue-400 focus:bg-white/15 transition-all duration-300 backdrop-blur-sm"
                   required
                 />
               </div>
+
+              {/* Confirm Password field - only for Sign Up */}
+              {!isLogin && (
+                <div className="relative">
+                  <input
+                    type="password"
+                    placeholder="Confirm Password"
+                    value={formData.confirmPassword}
+                    onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                    className="w-full bg-white/10 text-white px-6 py-4 rounded-xl placeholder-gray-400 outline-none border border-white/20 focus:border-blue-400 focus:bg-white/15 transition-all duration-300 backdrop-blur-sm"
+                    required
+                  />
+                </div>
+              )}
               
               <motion.button
                 type="submit"
@@ -115,8 +143,19 @@ const Login: React.FC = () => {
                 whileHover={{ boxShadow: "0 20px 40px rgba(59, 130, 246, 0.3)" }}
                 whileTap={{ scale: 0.98 }}
               >
-                Sign In
+                {isLogin ? "Sign In" : "Sign Up"}
               </motion.button>
+
+              {/* Toggle between Login and Sign Up */}
+              <div className="text-center mt-4">
+                <button
+                  type="button"
+                  onClick={toggleMode}
+                  className="text-gray-300 hover:text-blue-400 transition-colors duration-300"
+                >
+                  {isLogin ? "Don't have an account? Sign up" : "Already have an account? Login"}
+                </button>
+              </div>
             </motion.form>
           </div>
         </div>

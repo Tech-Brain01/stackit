@@ -162,3 +162,22 @@
 .text-white[contenteditable]:empty:before {
   color: #D1D5DB;
 }
+
+/* Fix text direction in contenteditable elements */
+[contenteditable] {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: normal !important;
+  writing-mode: lr-tb !important;
+}
+
+[contenteditable] * {
+  direction: ltr !important;
+  unicode-bidi: normal !important;
+}
+
+/* Ensure proper cursor and text flow */
+[contenteditable]:focus {
+  text-align: left !important;
+  direction: ltr !important;
+}
