@@ -23,7 +23,7 @@ authRouter.post("/signup", async (req, res) => {
 authRouter.post("/login", async (req, res) => {
   try {
     const body = req.body;
-    const success = UserLoginSchema.safeParse(body);
+    const { success } = UserLoginSchema.safeParse(body);
 
     if (!success) throw new Error("Invalid Details");
 

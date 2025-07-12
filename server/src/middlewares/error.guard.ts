@@ -1,12 +1,11 @@
-import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import { Request, Response, NextFunction } from "express";
 
-export interface authRequest extends Request {
-  user?: { userId: string };
-}
-
-export const authMiddleWare = async (
-  req: authRequest,
+export const errorHandler = (
+  err: Error,
+  req: Request,
   res: Response,
   next: NextFunction
-) => {};
+) => {
+  console.error(err.stack);
+  res.status(500).json({ error: true, message: err.message });
+};
