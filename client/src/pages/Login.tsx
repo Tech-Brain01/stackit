@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { useAuth } from "../context/authContext";
 
 // Define the backend URL with protocol detection
-const Backend_URL = "http://localhost:8080";
+const Backend_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
 
 interface LoginResponse {
   error?: boolean;
@@ -375,6 +375,7 @@ const Login: React.FC = () => {
                     : {}
                 }
                 whileTap={!isLoading ? { scale: 0.98 } : {}}
+                title="Submit"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center">
@@ -488,9 +489,10 @@ const Login: React.FC = () => {
               )}
               <span className="text-sm font-medium">{toast.message}</span>
             </div>
-            <button
+          <button
               onClick={() => setToast((prev) => ({ ...prev, show: false }))}
               className="ml-4 text-white/80 hover:text-white transition-colors"
+              title="Close notification"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path

@@ -72,9 +72,9 @@ const Home = () => {
     navigate("/ask");
   };
 
-  const handleBrowseQuestions = () => {
-    navigate("/questions");
-  };
+  // const handleBrowseQuestions = () => {
+  //   navigate("/questions");
+  // };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);

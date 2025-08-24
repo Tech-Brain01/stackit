@@ -1,4 +1,4 @@
-import { m, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
@@ -76,7 +76,7 @@ const AskQuestion = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
       <div className="fixed top-4 right-4 z-50 space-y-2">
         {toasts.map((toast) => (
           <motion.div
@@ -103,7 +103,7 @@ const AskQuestion = () => {
         ))}
       </div>
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-6 py-8 ">
         <motion.div
           className="rounded-2xl p-8 shadow-2xl border border-gray-700"
           initial={{ opacity: 0, y: 30 }}
@@ -113,11 +113,13 @@ const AskQuestion = () => {
           <form onSubmit={handleSubmitQuestion} className="space-y-8">
             {/* Title Field */}
             <InputField
+              
               label="Title"
               value={title}
               onChange={setTitle}
               placeholder="What's your programming question? Be specific."
               required
+              
             />
 
             {/* Description Field */}

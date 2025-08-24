@@ -32,7 +32,7 @@ const InputField = ({ value, onChange, placeholder, label, required = false }: I
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         placeholder={placeholder}
-        className={`w-full px-4 py-3 bg-transparent border-2 rounded-lg text-white placeholder-gray-400 outline-none transition-all duration-300 ${
+        className={`w-full px-4 py-3 bg-blue-900/80 border-2 rounded-lg text-white placeholder-gray-400 outline-none transition-all duration-300 ${
           isFocused ? 'border-blue-500 shadow-lg' : 'border-gray-500'
         }`}
         required={required}
